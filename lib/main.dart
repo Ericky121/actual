@@ -1,3 +1,4 @@
+import 'package:actual/common/component/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +13,22 @@ class _App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Container(),
+        backgroundColor: Colors.white,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomTextFormField(
+              hintText: '이메일을 입력해 주세요',
+              autofocus: true,
+              onChanged: (value) {},
+            ),
+            CustomTextFormField(
+              hintText: '비밀번호를 입력해 주세요',
+              obscureText: true,
+              onChanged: (value) {},
+            )
+          ],
+        ),
       )
     );
   }
