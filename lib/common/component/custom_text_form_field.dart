@@ -6,6 +6,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorText;
   final bool obscureText;
   final bool autofocus;
+  final TextInputType? keyboardType;
   final ValueChanged<String>? onChanged;
 
   const CustomTextFormField({
@@ -15,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.hintText,
     this.errorText,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
@@ -27,10 +29,12 @@ class CustomTextFormField extends StatelessWidget {
     );
 
     return TextFormField(
+
       cursorColor: PRIMARY_COLOR,
       // 비밀번호 입력할 때
       obscureText: obscureText,
       autofocus: autofocus,
+      keyboardType: keyboardType,
       onChanged: onChanged,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(20),
