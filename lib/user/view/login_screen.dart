@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final storage = FlutterSecureStorage();
+    //final storage = FlutterSecureStorage();
 
     final dio = Dio();
     // localhsot
@@ -108,7 +108,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    final refreshToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY4MDg0MTc3NiwiZXhwIjoxNjgwOTI4MTc2fQ.Ft3EmlpyWMz0ENhnijF_QAHl1Xn9TzwPxIXDYcGZbqw';
+                    //await storage.read(key: key);
+                    //final refreshToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY4MDg0MTc3NiwiZXhwIjoxNjgwOTI4MTc2fQ.Ft3EmlpyWMz0ENhnijF_QAHl1Xn9TzwPxIXDYcGZbqw';
+                    final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
                     final resp = await dio.post('http://$ip/auth/token',
                         options: Options(
                           headers: {
