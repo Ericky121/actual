@@ -30,11 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final dio = Dio();
     // localhsot
-    final emulatorIp = '10.0.2.2:3000';
-    final simulatorIp = '127.0.0.1:3000';
 
-    final ip = Platform.isIOS ? simulatorIp : emulatorIp;
-    print(ip);
     return DefaultLayout(
       child: SingleChildScrollView(
         // 텍스트필드 다른곳을 눌렀을때 키보드가 사라진다.
@@ -110,14 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () async {
                     //await storage.read(key: key);
                     //final refreshToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY4MDg0MTc3NiwiZXhwIjoxNjgwOTI4MTc2fQ.Ft3EmlpyWMz0ENhnijF_QAHl1Xn9TzwPxIXDYcGZbqw';
-                    final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
-                    final resp = await dio.post('http://$ip/auth/token',
-                        options: Options(
-                          headers: {
-                            'authorization' : 'Bearer $refreshToken',
-                          },
-                        ));
-                    print(resp.data);
+
                   },
                   style: TextButton.styleFrom(
                     primary: PRIMARY_COLOR,
