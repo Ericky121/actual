@@ -38,21 +38,35 @@ class RestaurantScreen extends StatelessWidget {
               print(snapshot.data);
 
               if (!snapshot.hasData) {
-                return Container();
+                return Container(); // 에러를 처리해줘야 함
               }
 
-              return RestaurantCard(
-                  image: Image.asset(
-                    'asset/img/food/ddeok_bok_gi.jpg',
-                    fit: BoxFit.cover,
-                  ),
-                  name: '불타는 떡볶이',
-                  tags: ['떡볶이', '치즈', '매운맛'],
-                  ratingsCount: 100,
-                  deliveryTime: 15,
-                  deliveryFee: 2000,
-                  ratings: 4.52
+              return ListView.separated(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) {
+                  final item = snapshot.data![index];
+                  return RestaurantCard(
+                    image: Image.network(
+                      'http://$ip${item['thumbUrl']}',
+                      fit: BoxFit.cover,
+                    ),
+                      // image: Image.asset(
+                      //   'asset/img/food/ddeok_bok_gi.jpg',
+                      //   fit: BoxFit.cover,
+                      // ),
+                      name: item['name'],
+                      tags: List<String>.from(item['tags']),
+                      ratingsCount: item['ratingsCount'],
+                      deliveryTime: item['deliveryTime'],
+                      deliveryFee: item['deliveryFee'],
+                      ratings: item['ratings']
+                  );
+                },
+                separatorBuilder: (_, index) {
+                  return SizedBox(height: 16.0);
+                },
               );
+
             },
           ),
         ),
