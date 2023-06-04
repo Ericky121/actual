@@ -46,30 +46,21 @@ class RestaurantScreen extends StatelessWidget {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
                   final item = snapshot.data![index];
-                  final pItem = RestaurantModel(
-                    id: item['id'],
-                    name: item['name'],
-                    thumbUrl: item['thumbUrl'],
-                    tags: List<String>.from(item['tags']),
-                    priceRange: RestaurantPriceRange.values.firstWhere(
-                        (e) => e.name == item['priceRange'],
-                    ),
-                    ratings: item['ratings'],
-                    ratingsCoount: item['ratingsCount'],
-                    deliveryTime: item['deliveryTime'],
-                    deliveryFee: item['deliveryFee'],
+                  final pItem = RestaurantModel.fromJson(
+                    json: item,
                   );
-                  return RestaurantCard(
-                      image: Image.network(
-                        'http://$ip${pItem.thumbUrl}',
-                        fit: BoxFit.cover,
-                      ),
-                      name: pItem.name,
-                      tags: pItem.tags,
-                      ratingsCount: pItem.ratingsCoount,
-                      deliveryTime: pItem.deliveryTime,
-                      deliveryFee: pItem.deliveryFee,
-                      ratings: pItem.ratings,
+                  return RestaurantCard.fromModel(
+                    model: pItem,
+                      // image: Image.network(
+                      //   pItem.thumbUrl,
+                      //   fit: BoxFit.cover,
+                      // ),
+                      // name: pItem.name,
+                      // tags: pItem.tags,
+                      // ratingsCount: pItem.ratingsCount,
+                      // deliveryTime: pItem.deliveryTime,
+                      // deliveryFee: pItem.deliveryFee,
+                      // ratings: pItem.ratings,
                   );
                 },
                 separatorBuilder: (_, index) {

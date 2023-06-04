@@ -1,6 +1,8 @@
 import 'package:actual/common/const/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../model/restaurant_model.dart';
+
 class RestaurantCard extends StatelessWidget {
 
   final Widget image;
@@ -22,10 +24,27 @@ class RestaurantCard extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  factory RestaurantCard.fromModel({
+    required RestaurantModel model,
+  }) {
+    return RestaurantCard(
+      image: Image.network(
+        model.thumbUrl,
+        fit: BoxFit.cover,
+      ),
+      name: model.name,
+      tags: model.tags,
+      ratingsCount: model.ratingsCount,
+      deliveryTime: model.deliveryTime,
+      deliveryFee: model.deliveryFee,
+      ratings: model.ratings,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child:Column(
+      child: Column(
         children: [
           // 테두리 깍는 효과
           ClipRRect(
@@ -118,11 +137,11 @@ class _IconText extends StatelessWidget {
           ),
           const SizedBox(width: 8.0,),
           Text(
-            label,
-            style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.w500,
-            )
+              label,
+              style: TextStyle(
+                fontSize: 12.0,
+                fontWeight: FontWeight.w500,
+              )
           )
         ],
       ),
