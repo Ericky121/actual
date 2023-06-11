@@ -7,7 +7,6 @@ import 'package:actual/restaurant/view/restaurant_detail_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-
 class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
 
@@ -16,14 +15,10 @@ class RestaurantScreen extends StatelessWidget {
 
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 
-    final resp = await dio.get(
-        'http://$ip/restaurant',
-        options: Options(
-            headers: {
-              'authorization': 'Bearer $accessToken',
-            }
-        )
-    );
+    final resp = await dio.get('http://$ip/restaurant',
+        options: Options(headers: {
+          'authorization': 'Bearer $accessToken',
+        }));
 
     return resp.data['data'];
   }
@@ -40,7 +35,9 @@ class RestaurantScreen extends StatelessWidget {
               print(snapshot.data);
 
               if (!snapshot.hasData) {
-                return Container(); // 에러를 처리해줘야 함
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }
 
               return ListView.separated(
@@ -52,22 +49,14 @@ class RestaurantScreen extends StatelessWidget {
                   );
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => RestaurantDetailScreen(),)
-                      );
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => RestaurantDetailScreen(
+                          id: pItem.id,
+                        ),
+                      ));
                     },
                     child: RestaurantCard.fromModel(
                       model: pItem,
-                        // image: Image.network(
-                        //   pItem.thumbUrl,
-                        //   fit: BoxFit.cover,
-                        // ),
-                        // name: pItem.name,
-                        // tags: pItem.tags,
-                        // ratingsCount: pItem.ratingsCount,
-                        // deliveryTime: pItem.deliveryTime,
-                        // deliveryFee: pItem.deliveryFee,
-                        // ratings: pItem.ratings,
                     ),
                   );
                 },
