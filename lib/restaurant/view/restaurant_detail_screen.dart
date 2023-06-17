@@ -52,7 +52,7 @@ class RestaurantDetailScreen extends StatelessWidget {
     );
 
     final repository =
-        RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+        await RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
 
     return repository.getRestaurantDetail(id: id);
   }

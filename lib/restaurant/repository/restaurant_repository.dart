@@ -1,7 +1,9 @@
+import 'package:actual/common/model/cursor_pagination_model.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/http.dart';
 
 import '../model/restaurant_detail_model.dart';
+import '../model/restaurant_model.dart';
 
 part 'restaurant_repository.g.dart';
 
@@ -11,8 +13,11 @@ abstract class RestaurantRepository {
   factory RestaurantRepository(Dio dio, {String baseUrl})
   = _RestaurantRepository;
 
-  // @GET('/')
-  // paginate();
+  @GET('/')
+  @Headers({
+    'accessToken': 'true',
+  })
+  Future<CursorPagination<RestaurantModel>> paginate();
 
   @GET('/{id}')
   @Headers({
@@ -21,4 +26,5 @@ abstract class RestaurantRepository {
   Future<RestaurantDetailModel> getRestaurantDetail({
     @Path() required String id,
   });
+
 }
