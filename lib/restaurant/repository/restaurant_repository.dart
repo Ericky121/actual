@@ -1,17 +1,29 @@
+import 'package:actual/common/dio/dio.dart';
 import 'package:actual/common/model/cursor_pagination_model.dart';
 import 'package:dio/dio.dart' hide Headers;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/http.dart';
 
+import '../../common/const/data.dart';
 import '../model/restaurant_detail_model.dart';
 import '../model/restaurant_model.dart';
 
 part 'restaurant_repository.g.dart';
 
+final restaurantRepositoryProvider = Provider<RestaurantRepository>((ref) {
+  final dio = ref.watch(dioProvider);
+
+  final repository =
+      RestaurantRepository(dio, baseUrl: "http://$ip/restaurant");
+
+  return repository;
+});
+
 @RestApi()
 abstract class RestaurantRepository {
   // http://$ip/restaurant
-  factory RestaurantRepository(Dio dio, {String baseUrl})
-  = _RestaurantRepository;
+  factory RestaurantRepository(Dio dio, {String baseUrl}) =
+      _RestaurantRepository;
 
   @GET('/')
   @Headers({
@@ -26,5 +38,4 @@ abstract class RestaurantRepository {
   Future<RestaurantDetailModel> getRestaurantDetail({
     @Path() required String id,
   });
-
 }
