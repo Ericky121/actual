@@ -1,5 +1,6 @@
 import 'package:actual/common/dio/dio.dart';
 import 'package:actual/common/layout/default_layout.dart';
+import 'package:actual/rating/component/rating_card.dart';
 import 'package:actual/restaurant/component/restaurant_card.dart';
 import 'package:actual/restaurant/model/restaurant_detail_model.dart';
 import 'package:actual/restaurant/provider/restaurant_provider.dart';
@@ -81,6 +82,20 @@ class _RestaurantDetailScreenState
           renderProcucts(
             products: state.products,
           ),
+        SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          sliver: SliverToBoxAdapter(
+            child: RatingCard(
+              rating: 4,
+              email: 'jc@codefactory.ai',
+              images: [],
+              avatarImage: AssetImage(
+                'asset/img/logo/codefactory_logo.png'
+              ),
+              content: '맛있습니다.',
+            ),
+          ),
+        ),
         // renderLabel(),
         // renderProcucts(products: state.),
       ]),
