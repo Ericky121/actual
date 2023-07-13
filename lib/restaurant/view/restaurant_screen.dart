@@ -13,48 +13,71 @@ import '../../common/dio/dio.dart';
 import '../../common/model/cursor_pagination_model.dart';
 import '../repository/restaurant_repository.dart';
 
-class RestaurantScreen extends ConsumerWidget {
+class RestaurantScreen extends ConsumerStatefulWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
 
-  //
-  // Future<List<RestaurantModel>> paginateRestaurant(WidgetRef ref) async {
-  //   final dio = ref.watch(dioProvider);
-  //
-  //   final repository = ref.watch(restaurantRepositoryProvider);
-  //
-  //   final resp =
-  //     await repository.paginate();
-  //
-  //   return resp.data;
-  //
-  //   // final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
-  //   //
-  //   // final resp = await dio.get('http://$ip/restaurant',
-  //   //     options: Options(headers: {
-  //   //       'authorization': 'Bearer $accessToken',
-  //   //     }));
-  //   //
-  //   // return resp.data['data'];
-  // }
+  @override
+  ConsumerState<RestaurantScreen> createState() => _RestaurantScreenState();
+}
+
+class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
+  final ScrollController controller = ScrollController();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.addListener(scrollListener);
+  }
+
+  void scrollListener() {
+    // 현재 위치가 최대 길이보다 조금 덜 되는 위치까지 왔다면 새로운 데이터 추가 요청
+    if (controller.offset > controller.position.maxScrollExtent - 300) {
+      ref.read(restaurantProvider.notifier).paginate(
+            fetchMore: true,
+          );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final data = ref.watch(restaurantProvider);
 
-    if (data.length == 0) {
+    if (data is CursorPaginationLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
 
+    if (data is CursorPaginationError) {
+      return Text(
+        data.message,
+      );
+    }
+
+    final cp = data as CursorPagination;
     return Container(
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: ListView.separated(
-            itemCount: data.length,
+            controller: controller,
+            itemCount: cp.data.length + 1,
             itemBuilder: (_, index) {
-              final item = data[index];
+              if (index == cp.data.length) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  child: Center(
+                    child: data is CursorPaginationFetchingMore
+                        ? CircularProgressIndicator()
+                        : Text('마지막 데이터입니다.'),
+                  ),
+                );
+              }
+              final item = cp.data[index];
               return GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(

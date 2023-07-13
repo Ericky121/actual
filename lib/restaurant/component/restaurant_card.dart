@@ -5,7 +5,6 @@ import '../model/restaurant_detail_model.dart';
 import '../model/restaurant_model.dart';
 
 class RestaurantCard extends StatelessWidget {
-
   final Widget image;
   final String name; // 레스토랑 이름
   final List<String> tags; // 레스토랑 태그
@@ -15,6 +14,9 @@ class RestaurantCard extends StatelessWidget {
   final double ratings; // 평균평점
 
   final bool isDetail;
+
+  // Hero 위젯 키
+  final String? heroKey;
 
   // 상세내용
   final String? detail;
@@ -29,6 +31,7 @@ class RestaurantCard extends StatelessWidget {
     required this.ratings,
     this.isDetail = false,
     this.detail,
+    this.heroKey,
     Key? key,
   }) : super(key: key);
 
@@ -41,6 +44,7 @@ class RestaurantCard extends StatelessWidget {
         model.thumbUrl,
         fit: BoxFit.cover,
       ),
+      heroKey: model.id,
       name: model.name,
       tags: model.tags,
       ratingsCount: model.ratingsCount,
@@ -58,11 +62,17 @@ class RestaurantCard extends StatelessWidget {
       child: Column(
         children: [
           // 테두리 깍는 효과
-          ClipRRect(
-            borderRadius: isDetail ? BorderRadius.circular(0.0) : BorderRadius.circular(12.0),
-            child: image,
+          if (heroKey != null)
+            Hero(
+              tag: ObjectKey(heroKey),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(isDetail ? 0.0 : 12.0),
+                child: image,
+              ),
+            ),
+          const SizedBox(
+            height: 16.0,
           ),
-          const SizedBox(height: 16.0,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: isDetail ? 16.0 : 0.0),
             child: Column(
@@ -75,7 +85,9 @@ class RestaurantCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 8.0,),
+                const SizedBox(
+                  height: 8.0,
+                ),
                 Text(
                   tags.join(' · '),
                   style: TextStyle(
@@ -83,7 +95,9 @@ class RestaurantCard extends StatelessWidget {
                     fontSize: 14.0,
                   ),
                 ),
-                const SizedBox(height: 8.0,),
+                const SizedBox(
+                  height: 8.0,
+                ),
                 Row(
                   children: [
                     _IconText(
@@ -154,17 +168,16 @@ class _IconText extends StatelessWidget {
             color: PRIMARY_COLOR,
             size: 14.0,
           ),
-          const SizedBox(width: 8.0,),
-          Text(
-              label,
+          const SizedBox(
+            width: 8.0,
+          ),
+          Text(label,
               style: TextStyle(
                 fontSize: 12.0,
                 fontWeight: FontWeight.w500,
-              )
-          )
+              ))
         ],
       ),
     );
   }
 }
-

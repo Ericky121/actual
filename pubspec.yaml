@@ -56,6 +56,7 @@ dev_dependencies:
   json_serializable: ^6.6.0
   retrofit_generator: '>=4.0.0 <5.0.0'
   riverpod_generator: ^2.2.3
+  skeletons: ^0.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
